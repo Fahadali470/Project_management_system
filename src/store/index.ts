@@ -12,18 +12,11 @@
  */
 
 import { configureStore } from '@reduxjs/toolkit'
-
-// Feature slices will be imported here as we build them
-// import authReducer from '@/features/auth/authSlice'
+import authReducer from '@/features/auth/authSlice'
 
 export const store = configureStore({
   reducer: {
-    // Temporary placeholder — prevents Redux "no valid reducer" warning
-    // Will be replaced as feature slices are added in Phase 2
-    _init: (state: null = null) => state,
-
-    // Feature slices added here as we build them:
-    // auth: authReducer,
+    auth: authReducer,
     // workspace: workspaceReducer,
     // projects: projectsReducer,
     // tasks: tasksReducer,
