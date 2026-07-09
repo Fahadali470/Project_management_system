@@ -2,37 +2,24 @@
  * AppRoutes.tsx — Application Router Mapping
  *
  * This file maps all path URLs to their respective page components.
- * It integrates the public/private route guards and sets up the shared AuthLayout structure.
+ * It integrates the public/private route guards and sets up the layout wrappers.
  */
 
 import { Routes, Route, Navigate } from 'react-router-dom'
 import ProtectedRoute from './ProtectedRoute'
 import PublicRoute from './PublicRoute'
-import AuthLayout from '@/components/layout/AuthLayout'
 
-// Authenticated Pages (Smart Components)
+// Layouts
+import AuthLayout from '@/components/layout/AuthLayout'
+import DashboardLayout from '@/components/layout/DashboardLayout'
+
+// Auth Pages
 import LoginPage from '@/pages/auth/LoginPage'
 import SignupPage from '@/pages/auth/SignupPage'
 import ForgotPasswordPage from '@/pages/auth/ForgotPasswordPage'
 
-// Placeholder dashboard page component for Phase 1 verification
-function DashboardPlaceholder() {
-  return (
-    <div className="flex min-h-screen flex-col items-center justify-center bg-neutral-950 text-center text-white">
-      <h1 className="text-3xl font-bold mb-2">Welcome to TaskFlow Pro</h1>
-      <p className="text-neutral-400 mb-6">You are successfully authenticated.</p>
-      <button
-        onClick={() => {
-          // Clear session on click for demonstration/testing
-          window.location.reload()
-        }}
-        className="rounded-lg bg-red-600 px-4 py-2 text-sm font-semibold hover:bg-red-500 transition-colors"
-      >
-        Sign Out (Test Refresh)
-      </button>
-    </div>
-  )
-}
+// Dashboard Pages
+import DashboardPage from '@/pages/dashboard/DashboardPage'
 
 export default function AppRoutes() {
   return (
@@ -48,7 +35,10 @@ export default function AppRoutes() {
 
       {/* ── Authenticated Routes ── */}
       <Route element={<ProtectedRoute />}>
-        <Route path="/" element={<DashboardPlaceholder />} />
+        <Route element={<DashboardLayout />}>
+          <Route path="/" element={<DashboardPage />} />
+          {/* Future authenticated routes will go here (e.g., /projects, /calendar, /settings) */}
+        </Route>
       </Route>
 
       {/* ── Catch-All Redirect ── */}
