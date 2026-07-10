@@ -29,21 +29,21 @@ This document tracks the feature implementation status of the TaskFlow Pro Proje
 - [x] Wire Dashboard Analytics landing with live counters, a completions Recharts `AreaChart`, and recent task activity feeds
 
 ## Phase 3: Task Details & Collaboration
-- . Implement task detail view overlay (`TaskDetailModal`) triggered by clicking on a Kanban task card
-- . Support detailed task descriptions and title edits inside the detail overlay
-- . Implement Task comments stream allowing team members to add and remove notes
-- . Add task attachment and description rich layout sections
-- . Support direct priority and assignee modifications inside the task detail overlay
+- [x] Implement task detail view overlay (`TaskDetailModal`) triggered by clicking on a Kanban task card
+- [x] Support detailed task descriptions and title edits inside the detail overlay
+- [x] Implement Task comments stream allowing team members to add and remove notes
+- [x] Add task attachment and description rich layout sections
+- [x] Support direct priority and assignee modifications inside the task detail overlay
 
 ## Phase 4: Interactive Calendar & Filtering
-- . Build Monthly Calendar view at `/calendar` showing tasks mapped to their due dates
-- . Code-color calendar task badges matching parent project themes
-- . Integrate toolbar selectors (Today, Prev Month, Next Month, and Project Filter dropdown)
-- . Connect calendar task badge clicks to launch `TaskDetailModal`
+- [x] Build Monthly Calendar view at `/calendar` showing tasks mapped to their due dates
+- [x] Code-color calendar task badges matching parent project themes
+- [x] Integrate toolbar selectors (Today, Prev Month, Next Month, and Project Filter dropdown)
+- [x] Connect calendar task badge clicks to launch `TaskDetailModal`
 
 ## Phase 5: Workspace Settings & User Profiles
-- . Build layout page at `/settings` with tabbed panel grids
-- . Construct User Profile form to edit name, email address, and role
-- . Construct Workspace Metadata form to adjust company details
-- . Create Workspace Team Roster editor to add new members or remove current teammates
-- . Add a developer utility toggle to clear local storage cache and reset mock data
+- [x] Build layout page at `/settings` with tabbed panel grids
+- [x] Construct User Profile form to edit name, email address, and role
+- [x] Construct Workspace Metadata form to adjust company details
+- [x] Create Workspace Team Roster editor to add new members or remove current teammates
+- [x] Add a developer utility toggle to clear local storage cache and reset mock data

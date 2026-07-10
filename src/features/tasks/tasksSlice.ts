@@ -15,7 +15,11 @@ const mockMembers: ProjectMember[] = [
   { id: 'mem-4', name: 'Alice Smith', email: 'alice@taskflowpro.com', avatar: null, role: 'viewer' },
 ]
 
-const initialMockTasks: Task[] = [
+type TaskSeed = Omit<Task, 'comments' | 'attachments'>
+type AddTaskPayload = Omit<Task, 'id' | 'createdAt' | 'updatedAt' | 'comments' | 'attachments'> &
+  Partial<Pick<Task, 'comments' | 'attachments'>>
+
+const baseMockTasks: TaskSeed[] = [
   // TaskFlow SaaS Platform (proj-1)
   {
     id: 'task-1',
@@ -181,6 +185,12 @@ const initialMockTasks: Task[] = [
   },
 ]
 
+const initialMockTasks: Task[] = baseMockTasks.map((task) => ({
+  ...task,
+  comments: [],
+  attachments: [],
+}))
+
 const initialState: TasksState = {
   tasks: initialMockTasks,
   isLoading: false,
@@ -191,10 +201,12 @@ export const tasksSlice = createSlice({
   name: 'tasks',
   initialState,
   reducers: {
-    addTask: (state, action: PayloadAction<Omit<Task, 'id' | 'createdAt' | 'updatedAt'>>) => {
+    addTask: (state, action: PayloadAction<AddTaskPayload>) => {
       const newTask: Task = {
         ...action.payload,
         id: `task-${Math.random().toString(36).substring(2, 9)}`,
+        comments: action.payload.comments ?? [],
+        attachments: action.payload.attachments ?? [],
         createdAt: new Date().toISOString(),
         updatedAt: new Date().toISOString(),
       }
@@ -217,9 +229,72 @@ export const tasksSlice = createSlice({
         task.updatedAt = new Date().toISOString()
       }
     },
+    addTaskComment: (
+      state,
+      action: PayloadAction<{ taskId: string; author: ProjectMember; message: string }>
+    ) => {
+      const task = state.tasks.find((t) => t.id === action.payload.taskId)
+      if (task) {
+        task.comments.push({
+          id: `comment-${Math.random().toString(36).substring(2, 9)}`,
+          taskId: task.id,
+          author: action.payload.author,
+          message: action.payload.message,
+          createdAt: new Date().toISOString(),
+        })
+        task.updatedAt = new Date().toISOString()
+      }
+    },
+    removeTaskComment: (
+      state,
+      action: PayloadAction<{ taskId: string; commentId: string }>
+    ) => {
+      const task = state.tasks.find((t) => t.id === action.payload.taskId)
+      if (task) {
+        task.comments = task.comments.filter((comment) => comment.id !== action.payload.commentId)
+        task.updatedAt = new Date().toISOString()
+      }
+    },
+    addTaskAttachment: (
+      state,
+      action: PayloadAction<{ taskId: string; name: string; url: string }>
+    ) => {
+      const task = state.tasks.find((t) => t.id === action.payload.taskId)
+      if (task) {
+        task.attachments.push({
+          id: `attachment-${Math.random().toString(36).substring(2, 9)}`,
+          taskId: task.id,
+          name: action.payload.name,
+          url: action.payload.url,
+          createdAt: new Date().toISOString(),
+        })
+        task.updatedAt = new Date().toISOString()
+      }
+    },
+    removeTaskAttachment: (
+      state,
+      action: PayloadAction<{ taskId: string; attachmentId: string }>
+    ) => {
+      const task = state.tasks.find((t) => t.id === action.payload.taskId)
+      if (task) {
+        task.attachments = task.attachments.filter((attachment) => attachment.id !== action.payload.attachmentId)
+        task.updatedAt = new Date().toISOString()
+      }
+    },
+    resetTasks: () => initialState,
   },
 })
 
-export const { addTask, updateTask, deleteTask, moveTask } = tasksSlice.actions
+export const {
+  addTask,
+  updateTask,
+  deleteTask,
+  moveTask,
+  addTaskComment,
+  removeTaskComment,
+  addTaskAttachment,
+  removeTaskAttachment,
+  resetTasks,
+} = tasksSlice.actions
 
 export default tasksSlice.reducer

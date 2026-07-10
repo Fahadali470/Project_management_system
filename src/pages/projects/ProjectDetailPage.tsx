@@ -17,6 +17,7 @@ import Badge from '@/components/ui/Badge'
 import Avatar from '@/components/ui/Avatar'
 import EmptyState from '@/components/ui/EmptyState'
 import CreateTaskModal from '@/components/forms/CreateTaskModal'
+import TaskDetailModal from '@/components/tasks/TaskDetailModal'
 import type { Task, TaskStatus } from '@/types/task.types'
 
 const COLUMNS: { id: TaskStatus; title: string; bgClass: string; textClass: string; dotClass: string }[] = [
@@ -40,6 +41,7 @@ export default function ProjectDetailPage() {
 
   const [isAddTaskOpen, setIsAddTaskOpen] = useState(false)
   const [activeDragId, setActiveDragId] = useState<string | null>(null)
+  const [selectedTaskId, setSelectedTaskId] = useState<string | null>(null)
 
   // Track project selection in Redux for child views if any
   useEffect(() => {
@@ -151,7 +153,7 @@ export default function ProjectDetailPage() {
               <DroppableColumn key={col.id} col={col} taskCount={columnTasks.length}>
                 <div className="space-y-4">
                   {columnTasks.map((task) => (
-                    <DraggableTaskCard key={task.id} task={task} />
+                    <DraggableTaskCard key={task.id} task={task} onOpen={setSelectedTaskId} />
                   ))}
                   {columnTasks.length === 0 && (
                     <div className="flex flex-col items-center justify-center py-10 px-4 rounded-xl border border-dashed border-neutral-800 bg-neutral-900/5 text-center text-xs text-neutral-500">
@@ -166,9 +168,9 @@ export default function ProjectDetailPage() {
 
         {/* Drag Overlay for seamless card moving visuals */}
         <DragOverlay>
-          {activeDragId ? (
+          {activeDragId && activeDragTask ? (
             <div className="opacity-90 scale-105 rotate-1 cursor-grabbing">
-              <TaskCard task={activeDragTask!} isOverlay />
+              <TaskCard task={activeDragTask} isOverlay />
             </div>
           ) : null}
         </DragOverlay>
@@ -179,6 +181,12 @@ export default function ProjectDetailPage() {
         isOpen={isAddTaskOpen}
         onClose={() => setIsAddTaskOpen(false)}
         projectId={project.id}
+      />
+
+      <TaskDetailModal
+        isOpen={selectedTaskId !== null}
+        taskId={selectedTaskId}
+        onClose={() => setSelectedTaskId(null)}
       />
     </div>
   )
@@ -227,7 +235,7 @@ function DroppableColumn({ col, taskCount, children }: DroppableColumnProps) {
 //  Draggable Card Wrapper Component
 // ─────────────────────────────────────────────
 
-function DraggableTaskCard({ task }: { task: Task }) {
+function DraggableTaskCard({ task, onOpen }: { task: Task; onOpen: (taskId: string) => void }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } = useDraggable({
     id: task.id,
   })
@@ -244,7 +252,22 @@ function DraggableTaskCard({ task }: { task: Task }) {
   }
 
   return (
-    <div ref={setNodeRef} style={style} {...listeners} {...attributes} className="cursor-grab active:cursor-grabbing">
+    <div
+      ref={setNodeRef}
+      style={style}
+      {...listeners}
+      {...attributes}
+      onClick={() => onOpen(task.id)}
+      onKeyDown={(event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault()
+          onOpen(task.id)
+        }
+      }}
+      role="button"
+      tabIndex={0}
+      className="cursor-grab active:cursor-grabbing"
+    >
       <TaskCard task={task} />
     </div>
   )

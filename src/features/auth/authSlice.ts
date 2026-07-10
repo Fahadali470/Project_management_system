@@ -52,6 +52,20 @@ export const authSlice = createSlice({
     },
 
     /**
+     * Applies editable profile fields from the settings screen.
+     */
+    updateUserProfile: (state, action: PayloadAction<Partial<User>>) => {
+      if (state.user) {
+        state.user = {
+          ...state.user,
+          ...action.payload,
+          id: state.user.id,
+          updatedAt: new Date().toISOString(),
+        }
+      }
+    },
+
+    /**
      * Updates the loading state indicator for async auth requests.
      */
     setLoading: (state, action: PayloadAction<boolean>) => {
@@ -67,6 +81,12 @@ export const authSlice = createSlice({
   },
 })
 
-export const { setCredentials, logout, setLoading, setError } = authSlice.actions
+export const {
+  setCredentials,
+  logout,
+  updateUserProfile,
+  setLoading,
+  setError,
+} = authSlice.actions
 
 export default authSlice.reducer

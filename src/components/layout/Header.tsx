@@ -9,6 +9,7 @@
  */
 
 import { useState } from 'react'
+import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
 import { logout } from '@/features/auth/authSlice'
 
@@ -116,12 +117,12 @@ export default function Header() {
                   <p className="text-xs text-neutral-400">Signed in as</p>
                   <p className="text-sm font-medium text-white truncate">{user?.email}</p>
                 </div>
-                <a href="#" className="block px-4 py-2 text-sm text-neutral-300 hover:bg-neutral-700 hover:text-white transition-colors" role="menuitem" tabIndex={-1}>
+                <Link to="/settings" className="block px-4 py-2 text-sm text-neutral-300 hover:bg-neutral-700 hover:text-white transition-colors" role="menuitem" tabIndex={-1}>
                   Your profile
-                </a>
-                <a href="#" className="block px-4 py-2 text-sm text-neutral-300 hover:bg-neutral-700 hover:text-white transition-colors" role="menuitem" tabIndex={-1}>
+                </Link>
+                <Link to="/settings" className="block px-4 py-2 text-sm text-neutral-300 hover:bg-neutral-700 hover:text-white transition-colors" role="menuitem" tabIndex={-1}>
                   Workspace settings
-                </a>
+                </Link>
                 <button
                   onClick={handleLogout}
                   className="w-full text-left block px-4 py-2 text-sm text-red-400 hover:bg-neutral-700 hover:text-red-300 transition-colors mt-1 border-t border-neutral-700/50 pt-3"

@@ -22,6 +22,8 @@ import ForgotPasswordPage from '@/pages/auth/ForgotPasswordPage'
 import DashboardPage from '@/pages/dashboard/DashboardPage'
 import ProjectsPage from '@/pages/projects/ProjectsPage'
 import ProjectDetailPage from '@/pages/projects/ProjectDetailPage'
+import CalendarPage from '@/pages/calendar/CalendarPage'
+import SettingsPage from '@/pages/settings/SettingsPage'
 
 export default function AppRoutes() {
   return (
@@ -41,6 +43,8 @@ export default function AppRoutes() {
           <Route path="/" element={<DashboardPage />} />
           <Route path="/projects" element={<ProjectsPage />} />
           <Route path="/projects/:projectId" element={<ProjectDetailPage />} />
+          <Route path="/calendar" element={<CalendarPage />} />
+          <Route path="/settings" element={<SettingsPage />} />
         </Route>
       </Route>
 

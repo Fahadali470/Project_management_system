@@ -137,6 +137,7 @@ export const projectsSlice = createSlice({
         }
       }
     },
+    resetProjects: () => initialState,
   },
 })
 
@@ -146,6 +147,7 @@ export const {
   deleteProject,
   setActiveProject,
   updateProjectProgress,
+  resetProjects,
 } = projectsSlice.actions
 
 export default projectsSlice.reducer

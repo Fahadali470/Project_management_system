@@ -12,6 +12,9 @@ export interface Workspace {
   name: string
   slug: string
   logo: string | null
+  companyEmail: string
+  companyWebsite: string
+  timezone: string
 }
 
 export interface WorkspaceState {
@@ -58,6 +61,9 @@ const initialState: WorkspaceState = {
     name: 'TaskFlow Pro Headquarters',
     slug: 'taskflow-hq',
     logo: null,
+    companyEmail: 'hello@taskflowpro.com',
+    companyWebsite: 'https://taskflowpro.com',
+    timezone: 'America/New_York',
   },
   members: mockMembers,
   isLoading: false,
@@ -73,15 +79,31 @@ export const workspaceSlice = createSlice({
         state.currentWorkspace.name = action.payload
       }
     },
+    updateWorkspace: (state, action: PayloadAction<Partial<Workspace>>) => {
+      if (state.currentWorkspace) {
+        state.currentWorkspace = {
+          ...state.currentWorkspace,
+          ...action.payload,
+          id: state.currentWorkspace.id,
+        }
+      }
+    },
     addMember: (state, action: PayloadAction<ProjectMember>) => {
       state.members.push(action.payload)
     },
     removeMember: (state, action: PayloadAction<string>) => {
       state.members = state.members.filter((m) => m.id !== action.payload)
     },
+    resetWorkspace: () => initialState,
   },
 })
 
-export const { updateWorkspaceName, addMember, removeMember } = workspaceSlice.actions
+export const {
+  updateWorkspaceName,
+  updateWorkspace,
+  addMember,
+  removeMember,
+  resetWorkspace,
+} = workspaceSlice.actions
 
 export default workspaceSlice.reducer

@@ -10,6 +10,22 @@ export type TaskStatus = 'todo' | 'in_progress' | 'review' | 'done'
 
 export type TaskPriority = 'low' | 'medium' | 'high' | 'urgent'
 
+export interface TaskComment {
+  id: string
+  taskId: string
+  author: ProjectMember
+  message: string
+  createdAt: string
+}
+
+export interface TaskAttachment {
+  id: string
+  taskId: string
+  name: string
+  url: string
+  createdAt: string
+}
+
 export interface Task {
   id: string
   projectId: string
@@ -19,6 +35,8 @@ export interface Task {
   priority: TaskPriority
   dueDate: string
   assignee: ProjectMember | null
+  comments: TaskComment[]
+  attachments: TaskAttachment[]
   createdAt: string
   updatedAt: string
 }
