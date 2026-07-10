@@ -13,14 +13,16 @@
 
 import { configureStore } from '@reduxjs/toolkit'
 import authReducer from '@/features/auth/authSlice'
+import projectsReducer from '@/features/projects/projectsSlice'
+import tasksReducer from '@/features/tasks/tasksSlice'
+import workspaceReducer from '@/features/workspace/workspaceSlice'
 
 export const store = configureStore({
   reducer: {
     auth: authReducer,
-    // workspace: workspaceReducer,
-    // projects: projectsReducer,
-    // tasks: tasksReducer,
-    // ui: uiReducer,
+    workspace: workspaceReducer,
+    projects: projectsReducer,
+    tasks: tasksReducer,
   },
 
   // Middleware configuration

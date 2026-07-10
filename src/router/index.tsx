@@ -20,6 +20,8 @@ import ForgotPasswordPage from '@/pages/auth/ForgotPasswordPage'
 
 // Dashboard Pages
 import DashboardPage from '@/pages/dashboard/DashboardPage'
+import ProjectsPage from '@/pages/projects/ProjectsPage'
+import ProjectDetailPage from '@/pages/projects/ProjectDetailPage'
 
 export default function AppRoutes() {
   return (
@@ -37,7 +39,8 @@ export default function AppRoutes() {
       <Route element={<ProtectedRoute />}>
         <Route element={<DashboardLayout />}>
           <Route path="/" element={<DashboardPage />} />
-          {/* Future authenticated routes will go here (e.g., /projects, /calendar, /settings) */}
+          <Route path="/projects" element={<ProjectsPage />} />
+          <Route path="/projects/:projectId" element={<ProjectDetailPage />} />
         </Route>
       </Route>
 
