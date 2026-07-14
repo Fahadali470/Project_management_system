@@ -8,6 +8,12 @@
  */
 
 import { NavLink } from 'react-router-dom'
+import { useAppShell } from '@/context/AppShellContext'
+
+interface SidebarContentProps {
+  isMobile?: boolean
+  onClose?: () => void
+}
 
 const navigation = [
   { name: 'Dashboard', href: '/', icon: HomeIcon },
@@ -21,14 +27,45 @@ function classNames(...classes: string[]) {
 }
 
 export default function Sidebar() {
+  const { isMobileSidebarOpen, closeMobileSidebar } = useAppShell()
+
   return (
-    <div className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
-      {/* Sidebar Container */}
-      <div className="flex grow flex-col gap-y-5 overflow-y-auto bg-neutral-900 border-r border-neutral-800 px-6 pb-4">
-        
-        {/* Brand Header */}
-        <div className="flex h-16 shrink-0 items-center gap-3 pt-4">
-          <div className="h-8 w-8 rounded-lg bg-gradient-to-br from-primary-500 to-primary-700 flex items-center justify-center shadow-glow">
+    <>
+      {isMobileSidebarOpen && (
+        <div
+          id="mobile-sidebar"
+          className="fixed inset-0 z-50 lg:hidden"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile navigation"
+        >
+          <button
+            type="button"
+            onClick={closeMobileSidebar}
+            className="absolute inset-0 bg-neutral-950/80 backdrop-blur-sm"
+            aria-label="Close sidebar"
+          />
+
+          <aside className="relative flex h-full w-80 max-w-[85vw] animate-slide-in-left flex-col border-r border-neutral-800 bg-neutral-900 shadow-2xl">
+            <SidebarContent isMobile onClose={closeMobileSidebar} />
+          </aside>
+        </div>
+      )}
+
+      <aside className="hidden lg:fixed lg:inset-y-0 lg:z-50 lg:flex lg:w-72 lg:flex-col">
+        <SidebarContent />
+      </aside>
+    </>
+  )
+}
+
+function SidebarContent({ isMobile = false, onClose }: SidebarContentProps) {
+  return (
+    <div className="flex grow flex-col gap-y-5 overflow-y-auto border-r border-neutral-800 bg-neutral-900 px-6 pb-4">
+      {/* Brand Header */}
+      <div className="flex h-16 shrink-0 items-center justify-between gap-3 pt-4">
+        <div className="flex items-center gap-3">
+          <div className="flex h-8 w-8 items-center justify-center rounded-lg bg-gradient-to-br from-primary-500 to-primary-700 shadow-glow">
             <svg className="h-4 w-4 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4" />
             </svg>
@@ -38,44 +75,58 @@ export default function Sidebar() {
           </span>
         </div>
 
-        {/* Navigation List */}
-        <nav className="flex flex-1 flex-col mt-4">
-          <ul role="list" className="flex flex-1 flex-col gap-y-7">
-            <li>
-              <ul role="list" className="-mx-2 space-y-1">
-                {navigation.map((item) => (
-                  <li key={item.name}>
-                    <NavLink
-                      to={item.href}
-                      className={({ isActive }) =>
-                        classNames(
-                          isActive
-                            ? 'bg-neutral-800 text-white'
-                            : 'text-neutral-400 hover:bg-neutral-800/50 hover:text-white',
-                          'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 transition-colors'
-                        )
-                      }
-                    >
-                      {({ isActive }) => (
-                        <>
-                          <item.icon
-                            className={classNames(
-                              isActive ? 'text-primary-400' : 'text-neutral-500 group-hover:text-neutral-300',
-                              'h-6 w-6 shrink-0 transition-colors'
-                            )}
-                            aria-hidden="true"
-                          />
-                          {item.name}
-                        </>
-                      )}
-                    </NavLink>
-                  </li>
-                ))}
-              </ul>
-            </li>
-          </ul>
-        </nav>
+        {isMobile && (
+          <button
+            type="button"
+            onClick={onClose}
+            className="rounded-lg p-2 text-neutral-400 transition-colors hover:bg-neutral-800 hover:text-white"
+          >
+            <span className="sr-only">Close sidebar</span>
+            <svg className="h-5 w-5" fill="none" viewBox="0 0 24 24" strokeWidth="2" stroke="currentColor">
+              <path strokeLinecap="round" strokeLinejoin="round" d="M6 18 18 6M6 6l12 12" />
+            </svg>
+          </button>
+        )}
       </div>
+
+      {/* Navigation List */}
+      <nav className="mt-4 flex flex-1 flex-col">
+        <ul role="list" className="flex flex-1 flex-col gap-y-7">
+          <li>
+            <ul role="list" className="-mx-2 space-y-1">
+              {navigation.map((item) => (
+                <li key={item.name}>
+                  <NavLink
+                    to={item.href}
+                    onClick={isMobile ? onClose : undefined}
+                    className={({ isActive }) =>
+                      classNames(
+                        isActive
+                          ? 'bg-neutral-800 text-white'
+                          : 'text-neutral-400 hover:bg-neutral-800/50 hover:text-white',
+                        'group flex gap-x-3 rounded-md p-2 text-sm font-semibold leading-6 transition-colors'
+                      )
+                    }
+                  >
+                    {({ isActive }) => (
+                      <>
+                        <item.icon
+                          className={classNames(
+                            isActive ? 'text-primary-400' : 'text-neutral-500 group-hover:text-neutral-300',
+                            'h-6 w-6 shrink-0 transition-colors'
+                          )}
+                          aria-hidden="true"
+                        />
+                        {item.name}
+                      </>
+                    )}
+                  </NavLink>
+                </li>
+              ))}
+            </ul>
+          </li>
+        </ul>
+      </nav>
     </div>
   )
 }

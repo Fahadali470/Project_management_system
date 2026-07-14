@@ -11,11 +11,13 @@
 import { useState } from 'react'
 import { Link } from 'react-router-dom'
 import { useAppDispatch, useAppSelector } from '@/store/hooks'
+import { useAppShell } from '@/context/AppShellContext'
 import { logout } from '@/features/auth/authSlice'
 
 export default function Header() {
   const dispatch = useAppDispatch()
   const { user } = useAppSelector((state) => state.auth)
+  const { isMobileSidebarOpen, openMobileSidebar } = useAppShell()
   const [isProfileOpen, setIsProfileOpen] = useState(false)
 
   const handleLogout = () => {
@@ -28,7 +30,13 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 flex h-16 shrink-0 items-center gap-x-4 border-b border-neutral-800 bg-neutral-900/80 px-4 shadow-sm backdrop-blur-md sm:gap-x-6 sm:px-6 lg:px-8">
       {/* Mobile Hamburger (Visible only on small screens) */}
-      <button type="button" className="-m-2.5 p-2.5 text-neutral-400 lg:hidden hover:text-white transition-colors">
+      <button
+        type="button"
+        onClick={openMobileSidebar}
+        className="-m-2.5 p-2.5 text-neutral-400 lg:hidden hover:text-white transition-colors"
+        aria-controls="mobile-sidebar"
+        aria-expanded={isMobileSidebarOpen}
+      >
         <span className="sr-only">Open sidebar</span>
         <svg className="h-6 w-6" fill="none" viewBox="0 0 24 24" strokeWidth="1.5" stroke="currentColor" aria-hidden="true">
           <path strokeLinecap="round" strokeLinejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
