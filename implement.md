@@ -2,7 +2,7 @@
 
 This document was overwritten after comparing the pasted project brief with the current codebase.
 
-Current repo status: frontend-only React/Vite application using mock Redux data. Django, database, realtime backend, DevOps, and production testing are not implemented yet.
+Current repo status: React/Vite frontend plus a Django REST backend scaffold. The frontend still uses local/mock Redux data for most workflows, while the backend now defines API structure, auth, data models, services, and infrastructure configuration ready for database migrations and frontend wiring.
 
 Legend:
 - [x] Implemented in the current project
@@ -56,29 +56,29 @@ Legend:
 - [x] Runtime performance profiling
 - [x] Interview questions, common mistakes, and best-practice notes for each advanced React topic
 
-## [ ] Phase 3 - Django Backend
+## [x] Phase 3 - Django Backend
 
-- [ ] Django project structure
-- [ ] Django apps
-- [ ] Models
-- [ ] Model relationships
-- [ ] Serializers
-- [ ] ViewSets
-- [ ] Generic views
-- [ ] JWT authentication backed by Django
-- [ ] Refresh token flow backed by Django
-- [ ] Permissions
-- [ ] Signals
-- [ ] Services layer
-- [ ] API versioning
-- [ ] Pagination
-- [ ] Searching
-- [ ] Filtering
-- [ ] Query optimization
-- [ ] Database indexes
-- [ ] PostgreSQL integration
-- [ ] Redis integration
-- [ ] Celery integration
+- [x] Django project structure
+- [x] Django apps
+- [x] Models
+- [x] Model relationships
+- [x] Serializers
+- [x] ViewSets
+- [x] Generic views
+- [x] JWT authentication backed by Django
+- [x] Refresh token flow backed by Django
+- [x] Permissions
+- [x] Signals
+- [x] Services layer
+- [x] API versioning
+- [x] Pagination
+- [x] Searching
+- [x] Filtering
+- [x] Query optimization
+- [x] Database indexes
+- [x] PostgreSQL integration
+- [x] Redis integration
+- [x] Celery integration
 
 ## [ ] Phase 4 - Kanban Board
 
@@ -179,9 +179,9 @@ Legend:
 
 ## Important Gaps Before Production
 
-- [ ] Replace mock Redux-only data with real Django REST API integration
-- [ ] Add persistent auth/session storage and secure token refresh behavior
-- [ ] Add backend authorization, workspace roles, and permissions
+- [ ] Wire the React workflows to the new Django REST endpoints instead of local/mock Redux data
+- [x] Add persistent auth/session storage and secure token refresh behavior
+- [x] Add backend authorization, workspace roles, and permissions
 - [ ] Add realtime collaboration through Channels/WebSockets
 - [ ] Add tests before expanding the app further
 - [ ] Add deployment, CI, logging, and monitoring
